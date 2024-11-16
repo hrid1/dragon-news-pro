@@ -3,12 +3,11 @@ import LatestNews from "../../components/LatestNews";
 import LeftNavbar from "../../components/layout-components/LeftNavbar";
 import RIghtNavbar from "../../components/layout-components/RIghtNavbar";
 import Navbar from "../../components/Navbar";
-import { useContext } from "react";
-import { AuthContext } from "../../provider/AuthProvider";
+
 
 const Home = () => {
-  const info = useContext(AuthContext);
-  console.log(info);
+  
+  
   return (
     <div className="container mx-auto">
       <LatestNews />
