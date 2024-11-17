@@ -1,10 +1,11 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
 import toast from "react-hot-toast";
 
 const Register = () => {
   const { createUser, updateUserInfo } = useContext(AuthContext);
+  const [error, setError] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,17 +15,29 @@ const Register = () => {
     const password = form.get("password");
     const name = form.get("username");
     const photo = form.get("photo");
-    // console.log(name, email, photo, password);
+
+    if (name.length < 1) {
+      setError({ ...error, name: "Name must be entered" });
+      return;
+    } else if (password.length < 6) {
+      setError({ ...error, password: "Password must be 6 charecters" });
+      return;
+    }
+
+    console.log(name, email, photo, password);
     createUser(email, password)
       .then((result) => {
         console.log(result.user);
         updateUserInfo(name, photo)
-          .then(() => toast.success(`Welcome, ${name}`))
+          .then(() => toast.success("Accoutn created"))
           .catch((err) => console.log(err.message));
+        setError({});
       })
       .catch((error) => {
         console.log(error.message);
       });
+
+   
   };
 
   return (
@@ -44,6 +57,11 @@ const Register = () => {
               placeholder="Enter your username "
               className="w-full px-4 py-2 mt-1 text-gray-900 bg-gray-100 border border-gray-300 rounded-md "
             />
+            {error.name && (
+              <span className="text-xs text-red-600 font-semibold">
+                {error.name}
+              </span>
+            )}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -77,6 +95,11 @@ const Register = () => {
               placeholder="Enter your password"
               className="w-full px-4 py-2 mt-1 text-gray-900 bg-gray-100 border border-gray-300 rounded-md "
             />
+            {error.password && (
+              <span className="text-xs text-red-600 font-semibold">
+                {error.password}
+              </span>
+            )}
           </div>
           <button
             type="submit"

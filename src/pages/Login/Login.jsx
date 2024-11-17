@@ -1,10 +1,13 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 
 const Login = () => {
   const { loginUser } = useContext(AuthContext);
+  const [error, setError] = useState({});
+  const location = useLocation();
+  console.log(error);
   const navigate = useNavigate();
 
   // handle login
@@ -16,13 +19,14 @@ const Login = () => {
     // console.log(email, password);
     loginUser(email, password)
       .then((result) => {
-        console.log(result.user);
+        // console.log(result.user);
         toast.success("Login successful! ");
-        navigate("/");
+        navigate(location?.state ? location.state : "/");
       })
-      .catch((error) => {
-        console.log(error.message);
+      .catch((err) => {
+        // console.log(error.message);
         toast.error("Error:Try again!");
+        setError({ ...error, login: err.code });
       });
   };
 
@@ -55,6 +59,9 @@ const Login = () => {
               className="w-full px-4 py-2 mt-1 text-gray-900 bg-gray-100 border border-gray-300 rounded-md "
             />
           </div>
+
+          {error.login && <span className="text-xs font-semibold  text-red-500">{error.login}</span>}
+         
           <button
             type="submit"
             className=" w-full py-2 text-white bg-gray-800 rounded-md hover:bg-gray-700"

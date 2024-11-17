@@ -16,7 +16,7 @@ const AuthProvider = ({ children }) => {
 
   const createUser = (email, password) => {
     setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password);
+    return createUserWithEmailAndPassword(auth, email, password)
   };
 
   const loginUser = (email, password) => {
@@ -40,7 +40,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const updateUserInfo = (name, photo) => {
-    updateProfile(auth.currentUser, { displayName: name, photoURL: photo });
+    return updateProfile(auth.currentUser, { displayName: name, photoURL: photo });
   };
 
   const authInfo = {
